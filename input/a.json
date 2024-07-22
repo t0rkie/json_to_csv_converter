@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "component": {
+      "bom-ref": "aaa",
+      "type": "library",
+      "licenses": [1, 2]
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "bbb",
+      "name": "Xmblsq07",
+      "licenses": [1, 2]
+    }
+  ]
+}

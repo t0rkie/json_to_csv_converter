@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "component": {
+      "bom-ref": "bbb",
+      "type": "library",
+      "name": "laicnn;a9",
+      "version": "release_20240711"
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "aaa",
+      "name": "lsjljvlajsdef",
+      "version": "release_20150911",
+      "licenses": [3, 4]
+    }
+  ]
+}
