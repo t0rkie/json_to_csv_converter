@@ -2,8 +2,13 @@ import json
 import glob
 import pandas as pd
 
+print('************** 処理開始 **************')
 # JSONファイルのパスを取得
-files = glob.glob('./json_files/*')
+files = glob.glob('./input/*')
+if not files:
+	print('JSONファイルがありません。終了します。')
+	exit()
+
 
 # bom-refを含むオブジェクトを抽出する関数
 def extract_bom_refs(data, bom_refs):
@@ -31,6 +36,7 @@ print(json.dumps(all_bom_refs, indent=2))
 df = pd.DataFrame(all_bom_refs)
 df.to_csv('output.csv', index=False)
 
+print('************** 処理終了 **************')
 
 # <事前準備>
 # ・お手持ちのPCにPython3をインストールしてください
