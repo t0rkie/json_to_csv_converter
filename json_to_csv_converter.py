@@ -1,3 +1,4 @@
+import os
 import json
 import glob
 import pandas as pd
@@ -10,16 +11,18 @@ if not files:
 	print('JSONファイルがありません。終了します。')
 	exit()
 
+def get_file_name(file_path):
+	return os.path.basename(file_path)
 
 # bom-refを含むオブジェクトを抽出する関数
 def extract_bom_refs(data, bom_refs, file_name):
-	print(file_name)
 	if isinstance(data, dict):
 		if 'bom-ref' in data:
 			data_copy = OrderedDict()
 			data_copy['file_name'] = file_name
 			for key, value in data.items():
 				data_copy[key] = value
+			
 			bom_refs.append(data_copy)
 
 		for key, value in data.items():
@@ -33,7 +36,7 @@ all_bom_refs = []
 for file in files:
 	with open(file, 'r') as f:
 			data = json.load(f)
-			extract_bom_refs(data, all_bom_refs, file)
+			extract_bom_refs(data, all_bom_refs, get_file_name(file))
 
 all_bom_refs.sort(key=lambda x: x['bom-ref'])
 
