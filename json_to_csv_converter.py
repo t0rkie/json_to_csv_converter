@@ -1,6 +1,7 @@
 import json
 import glob
 import pandas as pd
+from collections import OrderedDict
 
 print('************** 処理開始 **************')
 # JSONファイルのパスを取得
@@ -11,30 +12,34 @@ if not files:
 
 
 # bom-refを含むオブジェクトを抽出する関数
-def extract_bom_refs(data, bom_refs):
+def extract_bom_refs(data, bom_refs, file_name):
+	print(file_name)
 	if isinstance(data, dict):
 		if 'bom-ref' in data:
-			bom_refs.append(data)
+			data_copy = OrderedDict()
+			data_copy['file_name'] = file_name
+			for key, value in data.items():
+				data_copy[key] = value
+			bom_refs.append(data_copy)
+
 		for key, value in data.items():
-			extract_bom_refs(value, bom_refs)
+			extract_bom_refs(value, bom_refs, file_name)
 	elif isinstance(data, list):
 		for item in data:
-				extract_bom_refs(item, bom_refs)
+				extract_bom_refs(item, bom_refs, file_name)
 
 # すべてのファイルからデータを抽出
 all_bom_refs = []
 for file in files:
 	with open(file, 'r') as f:
 			data = json.load(f)
-			extract_bom_refs(data, all_bom_refs)
+			extract_bom_refs(data, all_bom_refs, file)
 
 all_bom_refs.sort(key=lambda x: x['bom-ref'])
-# 抽出したデータを表示
-print(json.dumps(all_bom_refs, indent=2))
 
 # 必要に応じてCSVなどに保存
 df = pd.DataFrame(all_bom_refs)
-df.to_csv('output.csv', index=False)
+df.to_csv('output.csv', index=False, encoding='utf-8-sig')
 
 print('************** 処理終了 **************')
 
